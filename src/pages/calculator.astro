@@ -1,0 +1,11 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { CalculatorPage } from "../components/CalculatorPage.tsx";
+---
+<Layout
+  title="Calculator — DriverStack"
+  description="Run one shift through DriverStack to see your real hourly pay after gas, miles, and costs."
+  path="/calculator"
+>
+  <CalculatorPage client:load />
+</Layout>

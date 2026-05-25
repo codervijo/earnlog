@@ -1,0 +1,44 @@
+---
+import "../styles/styles.css";
+import { BottomNav } from "../components/BottomNav.tsx";
+
+interface Props {
+  title?: string;
+  description?: string;
+  path?: string;
+}
+
+const site = "https://earnlog.xyz";
+const {
+  title = "DriverStack — Know what you really make driving",
+  description = "DriverStack shows California gig drivers their real hourly pay after gas, miles, waiting time, and platform switching.",
+  path = "",
+} = Astro.props;
+const canonical = `${site}${path}`;
+---
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#1a1f24" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="earnlog.xyz" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+  </head>
+  <body>
+    <div class="mx-auto min-h-screen max-w-md pb-24">
+      <slot />
+    </div>
+    <BottomNav client:load />
+  </body>
+</html>

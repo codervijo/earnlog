@@ -1,0 +1,11 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { LogbookPage } from "../components/LogbookPage.tsx";
+---
+<Layout
+  title="Logbook — DriverStack"
+  description="Log every shift. DriverStack does the cost math, so you see your real hourly per session."
+  path="/logbook"
+>
+  <LogbookPage client:load />
+</Layout>

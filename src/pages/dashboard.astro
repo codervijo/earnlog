@@ -1,0 +1,11 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { DashboardPage } from "../components/DashboardPage.tsx";
+---
+<Layout
+  title="Dashboard — DriverStack"
+  description="Your real numbers — today and this week — for rideshare and delivery driving."
+  path="/dashboard"
+>
+  <DashboardPage client:load />
+</Layout>

@@ -1,0 +1,11 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { ReportPage } from "../components/ReportPage.tsx";
+---
+<Layout
+  title="Weekly Report — DriverStack"
+  description="Your last 7 days of driving — gross, net, real hourly, and best-vs-worst platform."
+  path="/report"
+>
+  <ReportPage client:load />
+</Layout>
