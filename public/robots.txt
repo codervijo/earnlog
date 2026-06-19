@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://earnlog.xyz/sitemap.xml
+Sitemap: https://earnlog.xyz/sitemap-index.xml
