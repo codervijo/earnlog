@@ -14,7 +14,11 @@ const {
   description = "DriverStack shows California gig drivers their real hourly pay after gas, miles, waiting time, and platform switching.",
   path = "",
 } = Astro.props;
-const canonical = `${site}${path}`;
+// Astro's directory format serves pages at /<path>/ and @astrojs/sitemap lists
+// them with the trailing slash; ensure the canonical matches the served URL
+// (a canonical pointing at /<path> 308-redirects to /<path>/ — an indexing
+// blocker that leaves sub-pages "unknown to Google").
+const canonical = `${site}${path}`.replace(/\/?$/, "/");
 ---
 <!doctype html>
 <html lang="en" class="dark">
