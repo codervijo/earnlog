@@ -1,11 +1,75 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import GuideLinks from "../components/GuideLinks.astro";
 import { CalculatorPage } from "../components/CalculatorPage.tsx";
+import { IRS_MILEAGE_RATE_2026, CA_MIN_WAGE } from "../lib/driverstack";
+
+const irsCents = Math.round(IRS_MILEAGE_RATE_2026 * 100);
+const minWage = CA_MIN_WAGE.toFixed(2);
+
+const appLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "@id": "https://earnlog.xyz/calculator/#app",
+  name: "DriverStack Real Hourly Calculator",
+  url: "https://earnlog.xyz/calculator/",
+  applicationCategory: "FinanceApplication",
+  operatingSystem: "Web",
+  description:
+    "Free calculator that shows California gig drivers their real hourly pay after gas and mileage, using either fuel-only cost or the IRS 72.5¢/mile full-cost rate, compared to the $16.90 minimum wage.",
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  publisher: { "@id": "https://earnlog.xyz/#organization" },
+};
 ---
 <Layout
-  title="Calculator — DriverStack"
-  description="Run one shift through DriverStack to see your real hourly pay after gas, miles, and costs."
+  title="Real hourly pay calculator for gig drivers — DriverStack"
+  description="Free calculator for California Uber, Lyft, DoorDash, Instacart and Uber Eats drivers: enter one shift and see your real hourly pay after gas and mileage, fuel-only or at the IRS 72.5¢/mile rate."
   path="/calculator"
 >
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(appLd)} />
+
   <CalculatorPage client:load />
+
+  <!-- Static, crawlable content below the interactive tool -->
+  <section class="px-5 pb-2">
+    <h2 class="text-lg font-bold">How the real-hourly calculator works</h2>
+    <p class="mt-2 text-sm text-muted-foreground">
+      Enter one shift — gross pay, hours online, and miles driven — and DriverStack subtracts
+      what the driving actually cost, then divides by your hours to show your
+      <strong class="text-foreground">real hourly pay</strong>. It flags any shift that comes in
+      below California's <strong class="text-foreground">${minWage}</strong> minimum wage.
+    </p>
+
+    <div class="mt-4 space-y-2.5 text-sm">
+      <div class="rounded-2xl border border-border bg-card p-4">
+        <div class="font-semibold">1. It uses your cost model, not the app's</div>
+        <p class="mt-1 text-muted-foreground">
+          Choose <strong class="text-foreground">full cost</strong> (the IRS {irsCents}¢/mile rate,
+          covering gas, depreciation, maintenance, insurance and tires) or
+          <strong class="text-foreground">fuel-only</strong> (just the gas you burn). The
+          <a class="text-primary underline" href="/cost-per-mile/">methodology page</a> explains
+          why the choice matters.
+        </p>
+      </div>
+      <div class="rounded-2xl border border-border bg-card p-4">
+        <div class="font-semibold">2. It compares to real California minimum wage</div>
+        <p class="mt-1 text-muted-foreground">
+          Every result is checked against the ${minWage} statewide floor. See
+          <a class="text-primary underline" href="/california-minimum-wage-drivers/">how that
+          benchmark applies to contractors</a>.
+        </p>
+      </div>
+      <div class="rounded-2xl border border-border bg-card p-4">
+        <div class="font-semibold">3. It works for every platform</div>
+        <p class="mt-1 text-muted-foreground">
+          Uber, Lyft, DoorDash, Instacart, Uber Eats, Spark, and Amazon Flex. Compare them on
+          <a class="text-primary underline" href="/real-pay-comparison/">real pay</a>, or see a
+          <a class="text-primary underline" href="/is-doordash-worth-it-california/">worked
+          example</a>.
+        </p>
+      </div>
+    </div>
+
+    <GuideLinks current="/calculator/" />
+  </section>
 </Layout>

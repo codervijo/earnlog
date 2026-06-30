@@ -6,6 +6,7 @@ interface Props {
   title?: string;
   description?: string;
   path?: string;
+  noindex?: boolean;
 }
 
 const site = "https://earnlog.xyz";
@@ -13,6 +14,7 @@ const {
   title = "DriverStack — Know what you really make driving",
   description = "DriverStack shows California gig drivers their real hourly pay after gas, miles, waiting time, and platform switching.",
   path = "",
+  noindex = false,
 } = Astro.props;
 // Astro's directory format serves pages at /<path>/ and @astrojs/sitemap lists
 // them with the trailing slash; ensure the canonical matches the served URL
@@ -27,6 +29,7 @@ const canonical = `${site}${path}`.replace(/\/?$/, "/");
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <meta name="theme-color" content="#1a1f24" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -38,6 +41,34 @@ const canonical = `${site}${path}`.replace(/\/?$/, "/");
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+
+    <!-- Sitewide Organization + WebSite structured data (every Layout page).
+         sameAs is empty until real public profiles exist — fill in below. -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://earnlog.xyz/#organization",
+          "name": "DriverStack",
+          "alternateName": "earnlog.xyz",
+          "url": "https://earnlog.xyz/",
+          "description": "Real hourly pay calculator for California gig drivers — Uber, Lyft, DoorDash, Instacart, Uber Eats and more.",
+          // TODO: add real public profile URLs (e.g. X/Twitter, LinkedIn, GitHub) once they exist.
+          "sameAs": []
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://earnlog.xyz/#website",
+          "url": "https://earnlog.xyz/",
+          "name": "DriverStack",
+          "publisher": { "@id": "https://earnlog.xyz/#organization" }
+        }
+      ]
+    })} />
+
+    <!-- Page-specific structured data (Article / FAQPage / WebApplication) -->
+    <slot name="head" />
   </head>
   <body>
     <div class="mx-auto min-h-screen max-w-md pb-24">

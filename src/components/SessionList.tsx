@@ -1,4 +1,4 @@
-import { compute, fmtUSD, fmtHr, type Session, type Settings } from "../lib/driverstack";
+import { compute, fmtUSD, fmtHr, CA_MIN_WAGE, type Session, type Settings } from "../lib/driverstack";
 import { Pencil, Trash2 } from "lucide-react";
 
 interface Props {
@@ -20,8 +20,8 @@ export function SessionList({ sessions, settings, onEdit, onDelete }: Props) {
   return (
     <ul className="space-y-2.5">
       {sorted.map((s) => {
-        const c = compute(s, settings.costPerMile);
-        const neg = c.realHourly < 16;
+        const c = compute(s, settings.costPerMile, settings.costMode);
+        const neg = c.realHourly < CA_MIN_WAGE;
         return (
           <li key={s.id} className="rounded-2xl border border-border bg-card p-4">
             <div className="flex items-start justify-between gap-3">

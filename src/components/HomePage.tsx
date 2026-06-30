@@ -20,7 +20,7 @@ export function HomePage() {
           Calculate My Real Hourly <ArrowRight className="size-4" />
         </a>
         <a
-          href="/dashboard"
+          href="/example-report/"
           className="flex items-center justify-center gap-2 rounded-xl border border-border bg-secondary px-5 py-4 font-semibold text-secondary-foreground"
         >
           <Eye className="size-4" /> See Example Report
@@ -64,6 +64,10 @@ export function HomePage() {
             { platform: "Uber Eats", realHourly: 13.90 },
           ]}
         />
+        <p className="mt-2 text-xs text-muted-foreground">
+          Representative example figures, not survey data — they show the gap between gross and
+          real pay. <a href="/real-pay-comparison/" className="text-primary underline">See the full comparison and the math →</a>
+        </p>
       </section>
 
       <section className="mt-8 rounded-2xl border border-primary/30 bg-primary/10 p-5">
@@ -71,6 +75,29 @@ export function HomePage() {
         <p className="mt-1 text-sm text-foreground/90">
           Full-time Uber, Lyft, DoorDash, Instacart, Uber Eats, Spark, and Amazon Flex drivers — we flag every shift that falls below CA minimum wage.
         </p>
+      </section>
+
+      <section className="mt-8">
+        <h2 className="text-lg font-bold">Guides for California drivers</h2>
+        <ul className="mt-3 space-y-2">
+          {[
+            { href: "/real-pay-comparison/", label: "Uber vs DoorDash vs Instacart: real pay (2026)" },
+            { href: "/cost-per-mile/", label: "What a mile really costs: IRS 72.5¢ vs fuel-only" },
+            { href: "/california-minimum-wage-drivers/", label: "Does your shift beat CA minimum wage?" },
+            { href: "/is-doordash-worth-it-california/", label: "Is DoorDash worth it in California?" },
+            { href: "/example-report/", label: "Example weekly report (sample data)" },
+          ].map((g) => (
+            <li key={g.href}>
+              <a
+                href={g.href}
+                className="flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3 text-sm font-medium active:opacity-90"
+              >
+                <span>{g.label}</span>
+                <ArrowRight className="size-4 text-primary" />
+              </a>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="mt-8 rounded-2xl border border-border bg-card p-6 text-center">

@@ -1,0 +1,47 @@
+---
+// Cross-links between the static content pages + calculator CTA. Rendered at the
+// bottom of every guide so each page links to the others — gives Google a crawl
+// path to all of them (orphan pages don't get indexed) and keeps users moving
+// toward /calculator.
+interface Props {
+  current?: string; // path of the page rendering this, so it links the others
+}
+const { current = "" } = Astro.props;
+
+const guides = [
+  { href: "/real-pay-comparison/", label: "Uber vs DoorDash vs Instacart: real pay in CA (2026)" },
+  { href: "/cost-per-mile/", label: "What a mile really costs: IRS 72.5¢ vs fuel-only" },
+  { href: "/california-minimum-wage-drivers/", label: "Does your gig shift beat CA minimum wage?" },
+  { href: "/is-doordash-worth-it-california/", label: "Is DoorDash worth it in California?" },
+  { href: "/example-report/", label: "Example weekly report (sample shift data)" },
+];
+const others = guides.filter((g) => g.href !== current);
+---
+<section class="mt-10">
+  <div class="text-xs font-medium uppercase tracking-wider text-muted-foreground">More guides</div>
+  <ul class="mt-3 space-y-2">
+    {others.map((g) => (
+      <li>
+        <a href={g.href} class="flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3 text-sm font-medium active:opacity-90">
+          <span>{g.label}</span>
+          <span class="text-primary">→</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<section class="mt-8 rounded-2xl border border-primary/30 bg-primary/10 p-6 text-center">
+  <div class="text-lg font-bold">Run your own shift</div>
+  <p class="mt-1 text-sm text-foreground/90">See your real hourly with both fuel-only and full IRS cost. Takes 30 seconds.</p>
+  <a
+    href="/calculator/"
+    class="mt-4 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 font-bold text-primary-foreground"
+  >
+    Open the calculator →
+  </a>
+</section>
+
+<footer class="mt-10 pb-4 text-center text-xs text-muted-foreground">
+  earnlog.xyz · DriverStack — real pay for California gig drivers
+</footer>

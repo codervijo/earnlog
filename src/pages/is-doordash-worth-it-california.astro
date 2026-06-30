@@ -1,0 +1,181 @@
+---
+import Layout from "../layouts/Layout.astro";
+import GuideLinks from "../components/GuideLinks.astro";
+
+const title = "Is DoorDash worth it in California in 2026? A worked example — DriverStack";
+const description =
+  "A realistic California DoorDash shift run through the full cost math — fuel-only vs the IRS 72.5¢/mile rate — and how the real hourly compares to the $16.90 minimum wage.";
+const path = "/is-doordash-worth-it-california";
+
+const published = "2026-06-27";
+const modified = "2026-06-27";
+
+const ld = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://earnlog.xyz/is-doordash-worth-it-california/#article",
+      headline: "Is DoorDash worth it in California in 2026? A worked example",
+      description,
+      datePublished: published,
+      dateModified: modified,
+      author: { "@id": "https://earnlog.xyz/#organization" },
+      publisher: { "@id": "https://earnlog.xyz/#organization" },
+      mainEntityOfPage: "https://earnlog.xyz/is-doordash-worth-it-california/",
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://earnlog.xyz/is-doordash-worth-it-california/#faq",
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: "Is DoorDash worth it in California in 2026?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "On a representative shift — $156 gross over 7.5 hours and 98 miles — DoorDash clears about $18.39/hour if you count only gas, but about $11.33/hour once you count the full IRS 72.5¢/mile operating cost. That second number is below California's $16.90 minimum wage, so whether it's 'worth it' depends on your market, your miles per dollar, and whether you account for vehicle wear.",
+          },
+        },
+      ],
+    },
+  ],
+};
+---
+<Layout title={title} description={description} path={path}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(ld)} />
+
+  <main class="px-5 pt-8">
+    <div class="text-xs font-bold uppercase tracking-[0.2em] text-primary">Worked example</div>
+    <h1 class="mt-3 text-3xl font-black leading-tight tracking-tight">
+      Is DoorDash worth it in California?
+    </h1>
+    <p class="mt-3 text-base text-muted-foreground">
+      Short answer: it depends entirely on how you count the cost of your car. Let's run a
+      real, specific shift through the math both ways and compare it to the
+      <strong class="text-foreground">$16.90</strong> California minimum wage.
+    </p>
+    <p class="mt-2 text-xs text-muted-foreground">
+      Last updated June 2026 · Methodology: one representative shift, costed fuel-only and at
+      the IRS 2026 rate of 72.5¢/mile. Figures are illustrative, not surveyed pay.
+    </p>
+
+    <section class="mt-8 rounded-2xl border border-border bg-card p-5">
+      <div class="text-xs font-medium uppercase tracking-wider text-muted-foreground">The shift</div>
+      <div class="mt-3 space-y-2 text-sm">
+        <div class="flex items-baseline justify-between"><span class="text-muted-foreground">Gross pay</span><span class="num font-semibold">$156.00</span></div>
+        <div class="flex items-baseline justify-between"><span class="text-muted-foreground">Online time</span><span class="num font-semibold">7.5 h</span></div>
+        <div class="flex items-baseline justify-between"><span class="text-muted-foreground">Miles driven</span><span class="num font-semibold">98</span></div>
+        <div class="flex items-baseline justify-between"><span class="text-muted-foreground">Assumptions</span><span class="num font-semibold">26 MPG · $4.80/gal</span></div>
+      </div>
+      <div class="mt-3 rounded-lg bg-muted px-3 py-2 text-xs text-muted-foreground num">
+        The app reports gross hourly = $156 ÷ 7.5h = <strong class="text-foreground">$20.80/hr</strong>. That's the number DoorDash shows. Now subtract the car.
+      </div>
+    </section>
+
+    <section class="mt-6">
+      <h2 class="text-lg font-bold">Two cost models, two verdicts</h2>
+      <div class="mt-4 overflow-hidden rounded-2xl border border-border">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-card text-left text-xs uppercase tracking-wider text-muted-foreground">
+              <th class="px-4 py-3 font-medium">Step</th>
+              <th class="px-4 py-3 text-right font-medium">Fuel-only</th>
+              <th class="px-4 py-3 text-right font-medium">IRS full cost</th>
+            </tr>
+          </thead>
+          <tbody class="num">
+            <tr class="border-t border-border">
+              <td class="px-4 py-3 text-muted-foreground">Gross pay</td>
+              <td class="px-4 py-3 text-right">$156.00</td>
+              <td class="px-4 py-3 text-right">$156.00</td>
+            </tr>
+            <tr class="border-t border-border">
+              <td class="px-4 py-3 text-muted-foreground">Cost basis</td>
+              <td class="px-4 py-3 text-right text-xs">98÷26×$4.80</td>
+              <td class="px-4 py-3 text-right text-xs">98×$0.725</td>
+            </tr>
+            <tr class="border-t border-border">
+              <td class="px-4 py-3 text-muted-foreground">Driving cost</td>
+              <td class="px-4 py-3 text-right text-cost">−$18.09</td>
+              <td class="px-4 py-3 text-right text-cost">−$71.05</td>
+            </tr>
+            <tr class="border-t border-border">
+              <td class="px-4 py-3 text-muted-foreground">Net profit</td>
+              <td class="px-4 py-3 text-right">$137.91</td>
+              <td class="px-4 py-3 text-right">$84.95</td>
+            </tr>
+            <tr class="border-t border-border bg-card">
+              <td class="px-4 py-3 font-semibold">Real hourly (÷ 7.5h)</td>
+              <td class="px-4 py-3 text-right font-bold text-profit">$18.39/hr</td>
+              <td class="px-4 py-3 text-right font-bold text-cost">$11.33/hr</td>
+            </tr>
+            <tr class="border-t border-border">
+              <td class="px-4 py-3 text-muted-foreground">vs $16.90 minimum</td>
+              <td class="px-4 py-3 text-right text-profit">+$1.49 above</td>
+              <td class="px-4 py-3 text-right text-cost">−$5.57 below</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-3 text-sm text-muted-foreground">
+        The app's $20.80/hr gross becomes <strong class="text-foreground">$18.39</strong> if you
+        only count gas, and <strong class="text-foreground">$11.33</strong> once you count the
+        <a class="text-primary underline" href="/cost-per-mile/">full IRS cost of the miles</a>.
+        The honest answer sits at the full-cost end — that $52.96 of vehicle cost is real, it
+        just shows up later as depreciation, tires, and repairs.
+      </p>
+    </section>
+
+    <section class="mt-8">
+      <h2 class="text-lg font-bold">Over a 5-shift week</h2>
+      <p class="mt-2 text-sm text-muted-foreground">
+        Five shifts like this — <span class="num">$780 gross</span>,
+        <span class="num">490 miles</span>, <span class="num">37.5 hours</span> — look like this:
+      </p>
+      <div class="mt-4 grid grid-cols-2 gap-3">
+        <div class="rounded-2xl border border-profit/30 bg-profit/10 p-4">
+          <div class="text-[11px] font-semibold uppercase tracking-wider text-profit">Fuel-only</div>
+          <div class="num mt-1 text-2xl font-bold text-profit">$18.39/hr</div>
+          <div class="num mt-1 text-xs text-muted-foreground">≈ $689.54 net / week</div>
+        </div>
+        <div class="rounded-2xl border border-cost/30 bg-cost/10 p-4">
+          <div class="text-[11px] font-semibold uppercase tracking-wider text-cost">IRS full cost</div>
+          <div class="num mt-1 text-2xl font-bold text-cost">$11.33/hr</div>
+          <div class="num mt-1 text-xs text-muted-foreground">≈ $424.75 net / week</div>
+        </div>
+      </div>
+      <p class="mt-3 text-sm text-muted-foreground">
+        The gap — about <strong class="text-foreground">$265/week</strong> — is what your car is
+        silently costing you. It doesn't show up on payday; it shows up when the brakes go or
+        the car is worth less at trade-in.
+      </p>
+    </section>
+
+    <section class="mt-8 rounded-2xl border border-border bg-card p-5">
+      <h2 class="text-base font-bold">So — worth it?</h2>
+      <p class="mt-2 text-sm text-muted-foreground">
+        For this shift, on a full-cost basis, no — it lands below California minimum wage.
+        DoorDash can still be worth it where tips are strong, orders are dense, and miles per
+        dollar are low — that's what moves the real hourly above $16.90. The only way to know
+        for <em>your</em> market is to run your own numbers, both ways.
+      </p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-lg font-bold">FAQ</h2>
+      <div class="mt-3 space-y-2.5">
+        <details class="rounded-2xl border border-border bg-card p-4">
+          <summary class="cursor-pointer text-sm font-semibold">Is DoorDash worth it in California in 2026?</summary>
+          <p class="mt-2 text-sm text-muted-foreground">
+            On this representative shift, DoorDash clears about $18.39/hour counting only gas,
+            but about $11.33/hour once you count the full IRS 72.5¢/mile operating cost — below
+            the $16.90 minimum wage. Whether it's worth it depends on your tips, order density,
+            and miles per dollar. Run your own shift to get your real number.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <GuideLinks current={path + "/"} />
+  </main>
+</Layout>

@@ -28,7 +28,7 @@ export function CalculatorPage() {
 
   function share() {
     if (!result) return;
-    const c = compute(result, settings.costPerMile);
+    const c = compute(result, settings.costPerMile, settings.costMode);
     const text = `My real hourly: $${c.realHourly.toFixed(2)}/hr (${result.platform})\nGross: $${result.grossPay} · ${result.onlineHours}h · ${result.miles}mi\nvia DriverStack — earnlog.xyz`;
     if (navigator.share) navigator.share({ text }).catch(() => {});
     else navigator.clipboard?.writeText(text);
@@ -41,7 +41,7 @@ export function CalculatorPage() {
 
       {result && (
         <div className="mt-5 space-y-3">
-          <ShareableResultCard session={result} computed={compute(result, settings.costPerMile)} />
+          <ShareableResultCard session={result} computed={compute(result, settings.costPerMile, settings.costMode)} />
           <div className="grid grid-cols-2 gap-2">
             <button
               onClick={share}

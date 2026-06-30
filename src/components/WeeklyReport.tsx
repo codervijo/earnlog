@@ -3,8 +3,8 @@ import { PlatformComparisonCard } from "./PlatformComparisonCard";
 
 export function WeeklyReport({ sessions, settings }: { sessions: Session[]; settings: Settings }) {
   const week = sessions.filter((s) => withinDays(s.date, 7));
-  const agg = aggregate(week, settings.costPerMile);
-  const platforms = byPlatform(week, settings.costPerMile);
+  const agg = aggregate(week, settings.costPerMile, settings.costMode);
+  const platforms = byPlatform(week, settings.costPerMile, settings.costMode);
   const under = agg.realHourly < CA_MIN_WAGE;
 
   return (

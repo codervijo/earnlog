@@ -1,0 +1,139 @@
+---
+import Layout from "../layouts/Layout.astro";
+import GuideLinks from "../components/GuideLinks.astro";
+import {
+  compute, aggregate, fmtUSD, fmtHr, fmtNum,
+  CA_MIN_WAGE, IRS_MILEAGE_RATE_2026, type Session,
+} from "../lib/driverstack";
+
+const title = "Example weekly driver report (sample data) — DriverStack";
+const description =
+  "A fully worked example of the DriverStack weekly report: five sample California gig shifts costed at the IRS 72.5¢/mile rate, with real hourly pay compared to the $16.90 minimum wage.";
+const path = "/example-report";
+
+const published = "2026-06-27";
+const modified = "2026-06-27";
+
+// Static sample week — fixed data so the page is fully populated for crawlers
+// (the live /dashboard reads your own localStorage and is noindex). Costed with
+// the IRS full-cost model; gas/MPG are carried but ignored in irs-full mode.
+const GAS = 4.8;
+const MPG = 26;
+const mk = (date: string, platform: any, grossPay: number, onlineHours: number, miles: number): Session =>
+  ({ id: date, date, platform, grossPay, onlineHours, miles, gasPrice: GAS, mpg: MPG });
+
+const week: Session[] = [
+  mk("2026-06-16", "Instacart", 210, 8.0, 110),
+  mk("2026-06-17", "DoorDash", 156, 7.5, 98),
+  mk("2026-06-18", "Uber", 182, 8.67, 143),
+  mk("2026-06-19", "Lyft", 142, 7.25, 128),
+  mk("2026-06-20", "Uber Eats", 98, 6.5, 87),
+];
+
+const rows = week.map((s) => ({ s, c: compute(s, 0, "irs-full") }));
+const agg = aggregate(week, 0, "irs-full");
+const irsCents = Math.round(IRS_MILEAGE_RATE_2026 * 100);
+const minWage = CA_MIN_WAGE.toFixed(2);
+
+const ld = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": "https://earnlog.xyz/example-report/#article",
+  headline: "Example weekly driver report (sample data)",
+  description,
+  datePublished: published,
+  dateModified: modified,
+  author: { "@id": "https://earnlog.xyz/#organization" },
+  publisher: { "@id": "https://earnlog.xyz/#organization" },
+  mainEntityOfPage: "https://earnlog.xyz/example-report/",
+};
+---
+<Layout title={title} description={description} path={path}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(ld)} />
+
+  <main class="px-5 pt-8">
+    <div class="text-xs font-bold uppercase tracking-[0.2em] text-primary">Example report</div>
+    <h1 class="mt-3 text-3xl font-black leading-tight tracking-tight">
+      A week of driving, told honestly
+    </h1>
+    <p class="mt-3 text-base text-muted-foreground">
+      This is what DriverStack's weekly report looks like with real numbers in it — five
+      sample California shifts, costed at the full IRS {irsCents}¢/mile rate. Every figure
+      below is explained, so you can see exactly how gross pay becomes real pay.
+    </p>
+    <p class="mt-2 text-xs text-muted-foreground">
+      Last updated June 2026 · Methodology: sample data, costed at the IRS 2026 rate of
+      {irsCents}¢/mile; real hourly = (gross − cost) ÷ online hours, vs the ${minWage} CA floor.
+    </p>
+
+    <section class="mt-8 rounded-2xl border border-border bg-gradient-to-br from-card to-secondary p-6">
+      <div class="text-xs font-bold uppercase tracking-widest text-primary">Weekly truth report</div>
+      <div class="text-xs text-muted-foreground num">Sample week · {week.length} shifts</div>
+      <div class="mt-4">
+        <div class="text-xs uppercase tracking-wider text-muted-foreground">Real hourly</div>
+        <div class={`num text-5xl font-black ${agg.realHourly < CA_MIN_WAGE ? "text-cost" : "text-profit"}`}>{fmtHr(agg.realHourly)}</div>
+        <div class="num mt-1 text-sm text-muted-foreground">Gross looked like {fmtHr(agg.grossHourly)}</div>
+      </div>
+      {agg.realHourly < CA_MIN_WAGE && (
+        <div class="mt-3 inline-flex rounded-lg bg-cost/15 px-2.5 py-1.5 text-xs font-medium text-cost">
+          Below CA minimum wage (${minWage}/hr)
+        </div>
+      )}
+    </section>
+
+    <section class="mt-4 grid grid-cols-2 gap-3">
+      <div class="rounded-2xl border border-border bg-card p-4"><div class="text-[11px] uppercase tracking-wider text-muted-foreground">Total gross</div><div class="num mt-1 text-xl font-bold">{fmtUSD(agg.grossPay)}</div></div>
+      <div class="rounded-2xl border border-border bg-card p-4"><div class="text-[11px] uppercase tracking-wider text-muted-foreground">Total cost</div><div class="num mt-1 text-xl font-bold text-cost">−{fmtUSD(agg.totalCosts)}</div></div>
+      <div class="rounded-2xl border border-border bg-card p-4"><div class="text-[11px] uppercase tracking-wider text-muted-foreground">Net profit</div><div class="num mt-1 text-xl font-bold text-profit">{fmtUSD(agg.netProfit)}</div></div>
+      <div class="rounded-2xl border border-border bg-card p-4"><div class="text-[11px] uppercase tracking-wider text-muted-foreground">Miles · hours</div><div class="num mt-1 text-xl font-bold">{fmtNum(agg.miles)} · {agg.hours.toFixed(1)}h</div></div>
+    </section>
+
+    <section class="mt-8">
+      <h2 class="text-lg font-bold">Shift by shift</h2>
+      <p class="mt-2 text-sm text-muted-foreground">
+        Cost is miles × {irsCents}¢. Real hourly is net profit ÷ online hours. Anything under
+        ${minWage} is below California minimum wage.
+      </p>
+      <div class="mt-4 overflow-hidden rounded-2xl border border-border">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-card text-left text-xs uppercase tracking-wider text-muted-foreground">
+              <th class="px-3 py-3 font-medium">Platform</th>
+              <th class="px-3 py-3 text-right font-medium">Gross</th>
+              <th class="px-3 py-3 text-right font-medium">Cost</th>
+              <th class="px-3 py-3 text-right font-medium">Real /hr</th>
+            </tr>
+          </thead>
+          <tbody class="num">
+            {rows.map(({ s, c }) => (
+              <tr class="border-t border-border">
+                <td class="px-3 py-3">
+                  <div class="font-semibold">{s.platform}</div>
+                  <div class="text-[11px] text-muted-foreground">{s.miles} mi · {s.onlineHours.toFixed(2)}h</div>
+                </td>
+                <td class="px-3 py-3 text-right">{fmtUSD(s.grossPay)}</td>
+                <td class="px-3 py-3 text-right text-cost">−{fmtUSD(c.totalCosts)}</td>
+                <td class={`px-3 py-3 text-right font-bold ${c.realHourly < CA_MIN_WAGE ? "text-cost" : "text-profit"}`}>{fmtHr(c.realHourly)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mt-8 rounded-2xl border border-border bg-card p-5">
+      <h2 class="text-base font-bold">What this week is really saying</h2>
+      <p class="mt-2 text-sm text-muted-foreground">
+        The apps made this week look like <span class="num">{fmtHr(agg.grossHourly)}</span>. After
+        the real cost of {fmtNum(agg.miles)} miles, it was <span class="num font-semibold">{fmtHr(agg.realHourly)}</span> —
+        {agg.realHourly < CA_MIN_WAGE ? " under " : " over "}California's ${minWage} minimum wage.
+        That difference is the depreciation, maintenance, insurance, and tires the
+        <a class="text-primary underline" href="/cost-per-mile/">IRS {irsCents}¢ rate</a> accounts
+        for and the apps never mention. Your own week will differ — this is sample data — so
+        <a class="text-primary underline" href="/calculator/">run your real shifts</a>.
+      </p>
+    </section>
+
+    <GuideLinks current={path + "/"} />
+  </main>
+</Layout>

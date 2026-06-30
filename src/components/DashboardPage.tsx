@@ -19,9 +19,9 @@ export function DashboardPage() {
   if (!settings) return null;
   const today = sessions.filter((s) => isToday(s.date));
   const week = sessions.filter((s) => withinDays(s.date, 7));
-  const todayAgg = aggregate(today, settings.costPerMile);
-  const weekAgg = aggregate(week, settings.costPerMile);
-  const platforms = byPlatform(week, settings.costPerMile);
+  const todayAgg = aggregate(today, settings.costPerMile, settings.costMode);
+  const weekAgg = aggregate(week, settings.costPerMile, settings.costMode);
+  const platforms = byPlatform(week, settings.costPerMile, settings.costMode);
   const best = platforms[0];
   const worst = platforms[platforms.length - 1];
 

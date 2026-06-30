@@ -1,0 +1,155 @@
+---
+import Layout from "../layouts/Layout.astro";
+import GuideLinks from "../components/GuideLinks.astro";
+
+const title = "What a mile really costs: IRS 72.5¢ vs fuel-only (2026) — DriverStack";
+const description =
+  "Gig-driving cost methodology: the difference between counting only fuel and the IRS 72.5¢/mile full-cost rate (Notice 2026-10), and why your real hourly pay swings on which you use.";
+const path = "/cost-per-mile";
+
+const published = "2026-06-27";
+const modified = "2026-06-27";
+
+const articleLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": "https://earnlog.xyz/cost-per-mile/#article",
+  headline: "What a mile really costs: IRS 72.5¢ vs fuel-only",
+  description,
+  datePublished: published,
+  dateModified: modified,
+  author: { "@id": "https://earnlog.xyz/#organization" },
+  publisher: { "@id": "https://earnlog.xyz/#organization" },
+  mainEntityOfPage: "https://earnlog.xyz/cost-per-mile/",
+};
+---
+<Layout title={title} description={description} path={path}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(articleLd)} />
+
+  <main class="px-5 pt-8">
+    <div class="text-xs font-bold uppercase tracking-[0.2em] text-primary">Methodology</div>
+    <h1 class="mt-3 text-3xl font-black leading-tight tracking-tight">
+      What a mile really costs
+    </h1>
+    <p class="mt-3 text-base text-muted-foreground">
+      Every "how much do drivers make" number depends on one buried assumption:
+      what you count a mile to cost. Counting only gas makes your pay look good.
+      Counting the <em>real</em> cost of running the car tells the truth. Here is
+      exactly how DriverStack does the math.
+    </p>
+    <p class="mt-2 text-xs text-muted-foreground">
+      Last updated June 2026 · Methodology: fuel-only cost vs the IRS 2026 standard
+      mileage rate, applied to driver-entered miles, pay, and hours.
+    </p>
+
+    <section class="mt-8">
+      <h2 class="text-lg font-bold">Two honest ways to count a mile</h2>
+      <p class="mt-2 text-sm text-muted-foreground">
+        DriverStack lets you pick the cost model in <strong class="text-foreground">Cost
+        assumptions</strong> on the calculator. The two modes answer two different questions.
+      </p>
+
+      <div class="mt-4 space-y-3">
+        <div class="rounded-2xl border border-border bg-card p-5">
+          <div class="text-sm font-bold text-primary">Fuel-only</div>
+          <p class="mt-1 text-sm text-muted-foreground">
+            Counts just the gas you burn: <span class="num">miles ÷ MPG × price per gallon</span>,
+            plus any small per-mile wear add-on you set. It answers
+            <em>"what did this shift cost me in gas right now?"</em> It deliberately
+            ignores the slow costs — the car wearing out, the next set of tires, the
+            insurance, the eventual repair. It will <strong class="text-foreground">overstate</strong>
+            your real hourly.
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-primary/30 bg-primary/10 p-5">
+          <div class="text-sm font-bold text-primary">Full cost — IRS 72.5¢/mile</div>
+          <p class="mt-1 text-sm text-foreground/90">
+            Counts <span class="num font-semibold">72.5¢ for every mile driven</span>. This is the
+            IRS 2026 business standard mileage rate, and it is built to cover the
+            <strong>fixed and variable cost of operating a vehicle</strong> — fuel,
+            depreciation, maintenance, insurance, and tires — in a single number. It
+            answers <em>"what is this mileage really costing me to keep driving?"</em>
+          </p>
+          <p class="mt-2 text-xs text-foreground/80">
+            Because 72.5¢ already includes gas, DriverStack does <strong>not</strong> add fuel on
+            top of it in this mode — that would double-count the gas.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-8">
+      <h2 class="text-lg font-bold">What the IRS 72.5¢ rate includes</h2>
+      <p class="mt-2 text-sm text-muted-foreground">
+        The IRS sets the business standard mileage rate from an annual study of the
+        fixed and variable costs of operating a car. For 2026 it rose 2.5¢ to
+        <strong class="text-foreground">72.5 cents per mile</strong>
+        (<a class="text-primary underline" href="https://www.irs.gov/newsroom/irs-sets-2026-business-standard-mileage-rate-at-725-cents-per-mile-up-25-cents" rel="nofollow noopener" target="_blank">IRS Notice 2026-10</a>),
+        effective January 1, 2026. The single rate is meant to stand in for all of this:
+      </p>
+      <ul class="mt-3 grid grid-cols-2 gap-2 text-sm">
+        <li class="rounded-xl border border-border bg-card px-3 py-2">⛽ Fuel</li>
+        <li class="rounded-xl border border-border bg-card px-3 py-2">📉 Depreciation</li>
+        <li class="rounded-xl border border-border bg-card px-3 py-2">🔧 Maintenance &amp; repairs</li>
+        <li class="rounded-xl border border-border bg-card px-3 py-2">🛡️ Insurance</li>
+        <li class="rounded-xl border border-border bg-card px-3 py-2">🛞 Tires</li>
+        <li class="rounded-xl border border-border bg-card px-3 py-2">🔋 Applies to EVs &amp; hybrids too</li>
+      </ul>
+    </section>
+
+    <section class="mt-8">
+      <h2 class="text-lg font-bold">The same 100 miles, two answers</h2>
+      <p class="mt-2 text-sm text-muted-foreground">
+        Assume a car that gets <span class="num">28 MPG</span> with gas at
+        <span class="num">$5.00/gal</span>. Here is what 100 miles costs under each model:
+      </p>
+
+      <div class="mt-4 overflow-hidden rounded-2xl border border-border">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-card text-left text-xs uppercase tracking-wider text-muted-foreground">
+              <th class="px-4 py-3 font-medium">Cost model</th>
+              <th class="px-4 py-3 text-right font-medium">Cost of 100 mi</th>
+            </tr>
+          </thead>
+          <tbody class="num">
+            <tr class="border-t border-border">
+              <td class="px-4 py-3">Fuel-only (100 ÷ 28 × $5.00)</td>
+              <td class="px-4 py-3 text-right font-bold text-profit">$17.86</td>
+            </tr>
+            <tr class="border-t border-border">
+              <td class="px-4 py-3">Full cost — IRS 72.5¢ (100 × $0.725)</td>
+              <td class="px-4 py-3 text-right font-bold text-cost">$72.50</td>
+            </tr>
+            <tr class="border-t border-border bg-card">
+              <td class="px-4 py-3 font-semibold">Cost fuel-only hides</td>
+              <td class="px-4 py-3 text-right font-bold text-cost">$54.64</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="mt-3 text-sm text-muted-foreground">
+        On an 8-hour shift that drives 100 miles, that hidden $54.64 is
+        <strong class="text-foreground">$6.83/hour</strong> that fuel-only quietly adds to your
+        apparent pay — money that is really going into depreciation, tires, and the
+        next repair bill. That single choice can move a shift from "above minimum wage"
+        to "below" it.
+      </p>
+    </section>
+
+    <section class="mt-8 rounded-2xl border border-border bg-card p-5">
+      <h2 class="text-base font-bold">Which should you use?</h2>
+      <p class="mt-2 text-sm text-muted-foreground">
+        If you want to know whether driving is <em>worth it</em> as a job — whether it
+        beats <a class="text-primary underline" href="/california-minimum-wage-drivers/">California
+        minimum wage</a> once the car is paid for — use full cost (IRS 72.5¢). If you just
+        want today's out-of-pocket gas, use fuel-only. DriverStack defaults to full cost
+        because that is the number that actually predicts whether you are getting ahead.
+      </p>
+    </section>
+
+    <GuideLinks current={path + "/"} />
+  </main>
+</Layout>

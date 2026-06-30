@@ -32,7 +32,7 @@ const description = "Real hourly pay for California rideshare and delivery drive
     <meta name="twitter:description" content={description} />
 
     <!-- JSON-LD structured data: Organization + WebSite (static; domain
-         is known at scaffold time. Update description by hand if needed.) -->
+         is known at scaffold time. Mirrors the sitewide graph in Layout.astro.) -->
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -40,17 +40,35 @@ const description = "Real hourly pay for California rideshare and delivery drive
     {
       "@type": "Organization",
       "@id": "https://earnlog.xyz/#organization",
-      "name": "earnlog.xyz",
-      "url": "https://earnlog.xyz/"
+      "name": "DriverStack",
+      "alternateName": "earnlog.xyz",
+      "url": "https://earnlog.xyz/",
+      "description": "Real hourly pay calculator for California gig drivers — Uber, Lyft, DoorDash, Instacart, Uber Eats and more.",
+      "sameAs": []
     },
     {
       "@type": "WebSite",
       "@id": "https://earnlog.xyz/#website",
       "url": "https://earnlog.xyz/",
-      "name": "earnlog.xyz",
+      "name": "DriverStack",
       "publisher": { "@id": "https://earnlog.xyz/#organization" }
     }
   ]
+}
+    </script>
+    <!-- TODO: add real public profile URLs to "sameAs" (X/Twitter, LinkedIn, GitHub) once they exist. -->
+    <!-- WebApplication schema for the calculator tool lives on /calculator/. -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "@id": "https://earnlog.xyz/calculator/#app",
+  "name": "DriverStack Real Hourly Calculator",
+  "url": "https://earnlog.xyz/calculator/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "description": "Free calculator that shows California gig drivers their real hourly pay after gas and mileage, using either fuel-only cost or the IRS 72.5¢/mile full-cost rate.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
 }
     </script>
   </head>

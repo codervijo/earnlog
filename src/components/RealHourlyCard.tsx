@@ -24,7 +24,7 @@ export function RealHourlyCard({ label, realHourly, grossHourly, big }: Props) {
       {under ? (
         <div className="mt-3 flex items-center gap-1.5 rounded-lg bg-cost/15 px-2.5 py-1.5 text-xs font-medium text-cost">
           <AlertTriangle className="size-3.5" />
-          Below CA minimum wage (${CA_MIN_WAGE}/hr)
+          Below CA minimum wage (${CA_MIN_WAGE.toFixed(2)}/hr)
         </div>
       ) : (
         <div className="mt-3 flex items-center gap-1.5 text-xs text-profit">

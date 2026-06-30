@@ -1,0 +1,190 @@
+---
+import Layout from "../layouts/Layout.astro";
+import GuideLinks from "../components/GuideLinks.astro";
+
+const title = "Real hourly pay: Uber vs DoorDash vs Instacart vs Uber Eats in California (2026) — DriverStack";
+const description =
+  "How rideshare and delivery apps compare on real hourly pay in California once gas and mileage are counted — and how each nets out against the $16.90 minimum wage.";
+const path = "/real-pay-comparison";
+
+const published = "2026-06-27";
+const modified = "2026-06-27";
+
+const CA_MIN = 16.9;
+
+// Representative (illustrative) figures, seeded from the DriverStack homepage.
+// These are NOT survey data — they show the shape of the gap, not measured pay.
+const platforms = [
+  { name: "Instacart", real: 19.1 },
+  { name: "DoorDash", real: 17.2 },
+  { name: "Uber Eats", real: 13.9 },
+];
+const maxReal = Math.max(...platforms.map((p) => p.real));
+
+const faq = [
+  {
+    q: "How much do DoorDash drivers really make in California after gas?",
+    a: "It depends heavily on how you count vehicle cost. On a representative shift, fuel-only math can show roughly $17–18/hour, but once you count full operating cost at the IRS 72.5¢/mile rate — which includes depreciation, maintenance, insurance and tires — the same shift can drop to around $11/hour, below California's $16.90 minimum wage. Run your own numbers to see which side of the line you land on.",
+  },
+  {
+    q: "Which delivery app pays the most in California?",
+    a: "In these representative figures Instacart shows the highest real hourly, followed by DoorDash, with Uber Eats lowest. But real pay depends on your market, miles per order, tips, and how you count vehicle cost — not on the app alone. The only number that matters is your own.",
+  },
+  {
+    q: "Why is my real hourly lower than the pay the app showed me?",
+    a: "Apps report gross pay — money in before costs. They don't subtract the gas you burned or the wear on your car. Once you subtract real driving cost, your true hourly is almost always lower than the in-app estimate.",
+  },
+  {
+    q: "Are these comparison numbers surveyed data?",
+    a: "No. The per-platform figures here are representative examples to illustrate the method, not measured survey results. DriverStack's value is letting you compute your own real hourly from your own shifts. Treat the platform numbers as a starting point, then run your shift.",
+  },
+];
+
+const faqLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://earnlog.xyz/real-pay-comparison/#article",
+      headline: "Real hourly pay: Uber vs DoorDash vs Instacart vs Uber Eats in California (2026)",
+      description,
+      datePublished: published,
+      dateModified: modified,
+      author: { "@id": "https://earnlog.xyz/#organization" },
+      publisher: { "@id": "https://earnlog.xyz/#organization" },
+      mainEntityOfPage: "https://earnlog.xyz/real-pay-comparison/",
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://earnlog.xyz/real-pay-comparison/#faq",
+      mainEntity: faq.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    },
+  ],
+};
+---
+<Layout title={title} description={description} path={path}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+
+  <main class="px-5 pt-8">
+    <div class="text-xs font-bold uppercase tracking-[0.2em] text-primary">Comparison</div>
+    <h1 class="mt-3 text-3xl font-black leading-tight tracking-tight">
+      Uber vs DoorDash vs Instacart vs Uber Eats: real pay in California
+    </h1>
+    <p class="mt-3 text-base text-muted-foreground">
+      Every app shows you gross pay. None of them subtract what driving actually
+      costs. Here is how the major California gig platforms stack up on
+      <strong class="text-foreground">real hourly pay</strong> — and how each lands against
+      the state's <strong class="text-foreground">$16.90/hour</strong> minimum wage.
+    </p>
+    <p class="mt-2 text-xs text-muted-foreground">
+      Last updated June 2026 · Methodology: gross pay minus driving cost, divided by
+      online hours. Platform figures below are representative examples, not survey data.
+    </p>
+
+    <section class="mt-8">
+      <h2 class="text-lg font-bold">Representative real hourly vs the $16.90 floor</h2>
+      <div class="mt-4 rounded-2xl border border-border bg-card p-5">
+        <ul class="space-y-3.5">
+          {platforms.map((p) => {
+            const above = p.real >= CA_MIN;
+            const delta = (p.real - CA_MIN).toFixed(2);
+            const pct = Math.max((p.real / maxReal) * 100, 4);
+            return (
+              <li>
+                <div class="flex items-baseline justify-between text-sm">
+                  <span class="font-semibold">{p.name}</span>
+                  <span class="num font-bold">${p.real.toFixed(2)}/hr</span>
+                </div>
+                <div class="mt-1 h-1.5 overflow-hidden rounded-full bg-muted">
+                  <div class={`h-full rounded-full ${above ? "bg-profit" : "bg-cost"}`} style={`width:${pct}%`}></div>
+                </div>
+                <div class={`num mt-1 text-xs ${above ? "text-profit" : "text-cost"}`}>
+                  {above ? `+$${delta} above` : `$${delta} below`} CA minimum wage
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      <div class="mt-3 rounded-xl border border-cost/30 bg-cost/10 px-4 py-3 text-xs text-foreground/90">
+        <strong class="text-cost">These are example figures, not surveyed data.</strong> They
+        illustrate the gap between gross and real pay — they are not a measurement of what
+        every driver earns. Your market, miles per order, tips, and cost model all move the
+        number. Run your own shift to get a figure you can trust.
+      </div>
+    </section>
+
+    <section class="mt-8">
+      <h2 class="text-lg font-bold">Show me the math</h2>
+      <p class="mt-2 text-sm text-muted-foreground">
+        Take one realistic DoorDash shift in California:
+        <span class="num">$156 gross</span>, <span class="num">7.5 hours</span> online,
+        <span class="num">98 miles</span>, gas at <span class="num">$4.80/gal</span>, a car at
+        <span class="num">26 MPG</span>. Watch what the cost model does to the answer:
+      </p>
+
+      <div class="mt-4 overflow-hidden rounded-2xl border border-border">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-card text-left text-xs uppercase tracking-wider text-muted-foreground">
+              <th class="px-4 py-3 font-medium">Step</th>
+              <th class="px-4 py-3 text-right font-medium">Fuel-only</th>
+              <th class="px-4 py-3 text-right font-medium">IRS full cost</th>
+            </tr>
+          </thead>
+          <tbody class="num">
+            <tr class="border-t border-border">
+              <td class="px-4 py-3 text-muted-foreground">Gross pay</td>
+              <td class="px-4 py-3 text-right">$156.00</td>
+              <td class="px-4 py-3 text-right">$156.00</td>
+            </tr>
+            <tr class="border-t border-border">
+              <td class="px-4 py-3 text-muted-foreground">Driving cost (98 mi)</td>
+              <td class="px-4 py-3 text-right text-cost">−$18.09</td>
+              <td class="px-4 py-3 text-right text-cost">−$71.05</td>
+            </tr>
+            <tr class="border-t border-border">
+              <td class="px-4 py-3 text-muted-foreground">Net profit</td>
+              <td class="px-4 py-3 text-right">$137.91</td>
+              <td class="px-4 py-3 text-right">$84.95</td>
+            </tr>
+            <tr class="border-t border-border bg-card">
+              <td class="px-4 py-3 font-semibold">Real hourly (÷ 7.5h)</td>
+              <td class="px-4 py-3 text-right font-bold text-profit">$18.39/hr</td>
+              <td class="px-4 py-3 text-right font-bold text-cost">$11.33/hr</td>
+            </tr>
+            <tr class="border-t border-border">
+              <td class="px-4 py-3 text-muted-foreground">vs $16.90 minimum</td>
+              <td class="px-4 py-3 text-right text-profit">above</td>
+              <td class="px-4 py-3 text-right text-cost">below</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-3 text-sm text-muted-foreground">
+        Same shift. Count only gas and it clears minimum wage; count the
+        <a class="text-primary underline" href="/cost-per-mile/">full IRS 72.5¢/mile cost</a>
+        and it falls nearly $6/hour short. This is why "what do drivers make" has no single
+        answer — and why you should run your own numbers.
+      </p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-lg font-bold">FAQ</h2>
+      <div class="mt-3 space-y-2.5">
+        {faq.map((f) => (
+          <details class="rounded-2xl border border-border bg-card p-4">
+            <summary class="cursor-pointer text-sm font-semibold">{f.q}</summary>
+            <p class="mt-2 text-sm text-muted-foreground">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <GuideLinks current={path + "/"} />
+  </main>
+</Layout>
