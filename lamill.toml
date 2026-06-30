@@ -11,6 +11,10 @@ custom_domains = [
     "earnlog.xyz",
 ]
 
+[index]
+indexnow_key = "a3a95b1a6a1178e54bdf7f731003848e"
+indexnow_enabled = true
+
 [stack]
 framework = "astro"
 
@@ -21,7 +25,7 @@ framework = "astro"
 site_type = ""            # e.g. "legal-compliance", "tool", "directory", "blog", "b2c"
 primary_keyword = ""      # the one phrase this site should rank for
 secondary_keywords = []   # 3-8 supporting phrases
-icp = ""                  # ideal customer profile — one sentence, specific role + context
+icp = "(specific ideal customer)"
 urgency_trigger = ""      # what makes the reader act now (deadline, penalty, pain)
 penalty = ""              # cost of inaction, in their terms (dollars, risk, time)
 tone = ""                 # e.g. "direct, technical, no fluff" or "warm, plainspoken"

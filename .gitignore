@@ -27,3 +27,6 @@ build/
 
 # Astro (generated content cache + types — never tracked)
 .astro/
+
+# lamill consumer-data exchange (transient, refreshed per crawl)
+.lamill/
