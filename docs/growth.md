@@ -71,3 +71,40 @@ Operator content for AI_AGENTS.md (press Enter to skip; section will render `(to
 - **Action:** project scaffolded via `portfolio new bootstrap`; first deploy pending. After deploy: verify in GSC as `sc-domain:earnlog.xyz` and submit the sitemap.
 - **Result:** TBD — review 2026-06-22
 - **Learning:** TBD
+
+## GSC recrawl — earnlog.xyz — 2026-06-17
+
+- Property: `sc-domain:earnlog.xyz`
+- Baseline: 2026-06-10 05:17 UTC
+- Re-crawled since baseline: **1/1**
+
+| URL | Last crawl | Re-crawled? | Fetch | Indexing | Verdict |
+|---|---|:---:|---|---|---|
+| `https://earnlog.xyz/` | 2026-06-12 17:49 UTC | ✓ | SUCCESSFUL | INDEXING_ALLOWED | PASS |
+
+## 2026-06-29 — Add static content layer to fix "crawled, not indexed"
+
+- **Status:** active
+- **Hypothesis:** The app pages (`/calculator`, `/dashboard`, etc.) are thin
+  React shells with almost no server-rendered text, which is why Google crawls
+  but won't index them. Shipping a layer of substantive, query-targeted static
+  HTML pages — each with real content, structured data, and internal links into
+  the tool — will get *those pages* indexed and start earning impressions, where
+  the app shells alone could not.
+- **KPI:** GSC indexed-page count (target: the 5 new content URLs move from
+  "Crawled – currently not indexed" → "Indexed"), plus first impressions/clicks
+  on the new URLs. Secondary: total impressions site-wide.
+- **Baseline (2026-06-29):** 1 page indexed (`/` only). 0 clicks / 0 impressions.
+  Calculator/app pages crawled but not indexed. Content URLs did not exist.
+- **Action:** Shipped a static content layer (commit `804a461`, deployed to main):
+  5 new indexable pages — `/real-pay-comparison/`, `/cost-per-mile/` (methodology
+  anchor), `/california-minimum-wage-drivers/`, `/is-doordash-worth-it-california/`,
+  `/example-report/` — all cross-linked and funnelling to `/calculator`. Added
+  WebApplication / Organization / FAQPage / Article JSON-LD. `noindex`-ed +
+  sitemap-excluded the user-data app shells (`/dashboard`, `/logbook`, `/report`)
+  so they stop diluting quality signals. Corrected core figures to verified 2026
+  sources (CA min wage $16.90; IRS mileage 72.5¢/mi). Next: in GSC, submit the
+  new URLs / Request Indexing and resubmit the sitemap.
+- **Result:** TBD — review 2026-07-27
+- **Learning:** TBD
+
