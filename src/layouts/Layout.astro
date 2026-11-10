@@ -1,4 +1,5 @@
 ---
+import Analytics from "../components/Analytics.astro";
 import "../styles/styles.css";
 import { BottomNav } from "../components/BottomNav.tsx";
 
@@ -69,6 +70,7 @@ const canonical = `${site}${path}`.replace(/\/?$/, "/");
 
     <!-- Page-specific structured data (Article / FAQPage / WebApplication) -->
     <slot name="head" />
+    <Analytics />
   </head>
   <body>
     <div class="mx-auto min-h-screen max-w-md pb-24">

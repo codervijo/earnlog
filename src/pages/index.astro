@@ -1,4 +1,5 @@
 ---
+import Analytics from "../components/Analytics.astro";
 import "../styles/styles.css";
 import { HomePage } from "../components/HomePage.tsx";
 import { BottomNav } from "../components/BottomNav.tsx";
@@ -71,6 +72,7 @@ const description = "Real hourly pay for California rideshare and delivery drive
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
 }
     </script>
+    <Analytics />
   </head>
   <body>
     <div class="mx-auto min-h-screen max-w-md pb-24">
